@@ -16,12 +16,18 @@ public class EventBarrier extends AbstractEventBarrier {
 	}
 
 	@Override
-	public void arrive() {
-		//lock(this)
-		Thread ct = Thread.currentThread();
+	public synchronized void arrive() {
+		Thread ct = Thread.currentThread();		
+		System.out.println("Thread: " + ct.toString() + " arrived at event barrier and is waiting");
 		consumerList.add(ct);
-		//while(!checkInProgress()){ wait() }
-		//end lock
+		while(!checkInProgress()){ 
+			try {
+				ct.wait();
+			} catch (InterruptedException e) {
+				System.out.println("Thread: " + ct.toString() + " was interrupted");
+				e.printStackTrace();
+			}
+		}
 		
 	}
 
