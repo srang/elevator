@@ -37,7 +37,7 @@ public class EventBarrier extends AbstractEventBarrier {
 	}
 
 	@Override
-	public void raise() {
+	public synchronized void raise() {
 		// isInProgress = true;
 		// while (waiters()>0) { wait }
 		// isInProgress = false;
