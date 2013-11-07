@@ -32,6 +32,14 @@ public class EventBarrier extends AbstractEventBarrier {
 	@Override
 	public synchronized void raise() {
 		notifyAll();
+		while (waiters()>0) { 
+			try {
+				this.wait();
+			} catch (InterruptedException e) {
+				System.out.println("Thread: " + this.toString() + " was interrupted");
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@Override
