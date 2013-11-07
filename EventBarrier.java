@@ -3,16 +3,14 @@ import java.util.LinkedList;
 
 public class EventBarrier extends AbstractEventBarrier {
 	
-	private boolean isInProgress = false;
 	private LinkedList<Thread> consumerList;
-	private LinkedList<Thread> producerList;
+
 
 	/** 
 	 * Instantiate EventBarrier
 	 */
 	public EventBarrier() {
 		consumerList = new LinkedList<Thread>();
-		producerList = new LinkedList<Thread>();
 	}
 
 	@Override
@@ -20,7 +18,7 @@ public class EventBarrier extends AbstractEventBarrier {
 		Thread ct = Thread.currentThread();		
 		System.out.println("Thread: " + ct.toString() + " arrived at event barrier and is waiting");
 		consumerList.add(ct);
-		while(!checkInProgress()){ 
+		while(consumerList != null){ 
 			try {
 				ct.wait();
 			} catch (InterruptedException e) {
@@ -31,30 +29,19 @@ public class EventBarrier extends AbstractEventBarrier {
 		
 	}
 
-	public boolean checkInProgress() {
-		//lock(this)
-		return isInProgress;
+	@Override
+	public synchronized void raise() {
+		notifyAll();
 	}
 
 	@Override
-	public void raise() {
-		// isInProgress = true;
-		// while (waiters()>0) { wait }
-		// isInProgress = false;
+	public synchronized void complete() {
+		Thread ct = Thread.currentThread();
+		consumerList.remove(ct);
 	}
 
 	@Override
-	public void complete() {
-		//lock(this)
-		//Thread ct = Thread.currentThread();
-		//ct.run();
-		//consumerList.remove(ct);
-	}
-
-	@Override
-	public int waiters() {
-		//lock(this) {
+	public synchronized int waiters() {
 		return consumerList.size();
-		//}
 	}
 }
