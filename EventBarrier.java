@@ -33,7 +33,7 @@ public class EventBarrier extends AbstractEventBarrier {
 	@Override
 	public synchronized void raise() {
 		notifyAll();
-		while (waiters()>0) { 
+		while (consumerList.size()>0) { 
 			try {
 				this.wait();
 			} catch (InterruptedException e) {
