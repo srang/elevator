@@ -12,8 +12,7 @@ public class TestEventBarrier {
 
 	@Test
 	public void testArrive () {
-		EventBarrier eb = new EventBarrier();
-		eb.arrive();
+		Thread t = new Thread();
 	}
 }
 
