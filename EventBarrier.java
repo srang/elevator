@@ -25,6 +25,7 @@ public class EventBarrier extends AbstractEventBarrier {
 				System.out.println("Thread: " + ct.toString() + " was interrupted");
 				e.printStackTrace();
 			}
+			complete();
 		}
 		
 	}
