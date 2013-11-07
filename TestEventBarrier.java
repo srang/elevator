@@ -2,11 +2,12 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+
 public class TestEventBarrier {
 	@Test
 	public void testInstantiate () {
 		EventBarrier eb = new EventBarrier();
-		assertNotNull("e must not be null", eb);
+		assertNotNull("Barrier must not be null", eb);
 	}
 
 	@Test
