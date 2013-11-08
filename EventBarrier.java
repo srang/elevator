@@ -19,7 +19,9 @@ public class EventBarrier extends AbstractEventBarrier {
 		System.out.println("Thread: " + ct.getId() + " arrived at event barrier");
 		consumerList.add(ct);
 		try {
-			this.wait();
+			while(consumerList != null){ 
+				this.wait();
+			}
 		} catch (InterruptedException e) {
 			System.out.println("Thread: " + ct.getId() + " was interrupted");
 			e.printStackTrace();
