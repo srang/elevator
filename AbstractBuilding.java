@@ -1,9 +1,12 @@
+import java.util.ArrayList;
+import java.util.LinkedList;
+
 
 public abstract class AbstractBuilding {
 
 	protected int numFloors;
 	protected int numElevators;
-	
+	public ArrayList<LinkedList<Rider>> riderQueue;
 	/**
 	 * Other variables/data structures as needed goes here 
 	 */

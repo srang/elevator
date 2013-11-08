@@ -4,7 +4,10 @@ public abstract class AbstractElevator {
 	protected int numFloors; 
 	protected int elevatorId;
 	protected int maxOccupancyThreshold;
-
+	
+	public enum direction{
+		MOVING_DOWN, MOVING_UP, NOT_MOVING
+	}
 	/**
 	 * Other variables/data structures as needed goes here 
 	 */
@@ -18,7 +21,7 @@ public abstract class AbstractElevator {
 	/**
 	 * Elevator control inferface: invoked by Elevator thread.
  	 */
-
+	public abstract void setBuilding(AbstractBuilding building);
 	/* Signal incoming and outgoing riders */
 	public abstract void OpenDoors(); 	
 
