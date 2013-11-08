@@ -2,7 +2,7 @@ import java.util.LinkedList;
 
 
 public class EventBarrier extends AbstractEventBarrier {
-	
+
 	private LinkedList<Thread> consumerList;
 
 
@@ -18,36 +18,40 @@ public class EventBarrier extends AbstractEventBarrier {
 		Thread ct = Thread.currentThread();		
 		System.out.println("Thread: " + ct.getId() + " arrived at event barrier");
 		consumerList.add(ct);
-		while(consumerList != null){ 
-			try {
-				
+		try {
+			while(consumerList != null){ 
 				ct.wait();
-			} catch (InterruptedException e) {
-				System.out.println("Thread: " + ct.getId() + " was interrupted");
-				e.printStackTrace();
 			}
-			complete();
+		} catch (InterruptedException e) {
+			System.out.println("Thread: " + ct.getId() + " was interrupted");
+			e.printStackTrace();
 		}
-		
+		complete();
 	}
 
 	@Override
 	public synchronized void raise() {
 		notifyAll();
-		while (consumerList.size()>0) { 
-			try {
-				this.wait();
-			} catch (InterruptedException e) {
-				System.out.println("Thread: " + this.toString() + " was interrupted");
-				e.printStackTrace();
+		Thread ct = Thread.currentThread();
+
+		try {
+			while (consumerList.size()>0) { 
+				System.out.println("Waking up all Threads");
+				ct.wait();
 			}
+		} catch (InterruptedException e) {
+			System.out.println("Thread: " + ct.getId() + " was interrupted");
+			e.printStackTrace();
 		}
+
+		System.out.println("All Threads complete");
 	}
 
 	@Override
 	public synchronized void complete() {
 		Thread ct = Thread.currentThread();
 		consumerList.remove(ct);
+		System.out.println("Thread " + ct.getId() + " has completed running");
 	}
 
 	@Override
