@@ -1,16 +1,16 @@
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 
 public class EventBarrier extends AbstractEventBarrier {
 
-	private LinkedList<Thread> consumerList;
+	private ArrayList<Thread> consumerList;
 
 
 	/** 
 	 * Instantiate EventBarrier
 	 */
 	public EventBarrier() {
-		consumerList = new LinkedList<Thread>();
+		consumerList = new ArrayList<Thread>();
 	}
 
 	@Override
@@ -19,9 +19,7 @@ public class EventBarrier extends AbstractEventBarrier {
 		System.out.println("Thread: " + ct.getId() + " arrived at event barrier");
 		consumerList.add(ct);
 		try {
-			while(consumerList != null){ 
-				this.wait();
-			}
+			this.wait();
 		} catch (InterruptedException e) {
 			System.out.println("Thread: " + ct.getId() + " was interrupted");
 			e.printStackTrace();
