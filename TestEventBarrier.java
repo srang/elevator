@@ -4,7 +4,7 @@ public class TestEventBarrier {
 		System.out.println("Created a new EventBarrier");
 		for(int i = 0; i < 10; i++) {
 			Thread t = new helperThread(evBar);
-			t.run();
+			t.start();
 		}
 		evBar.raise();
 	}

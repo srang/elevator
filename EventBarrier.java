@@ -20,7 +20,7 @@ public class EventBarrier extends AbstractEventBarrier {
 		consumerList.add(ct);
 		try {
 			while(consumerList != null){ 
-				ct.wait();
+				this.wait();
 			}
 		} catch (InterruptedException e) {
 			System.out.println("Thread: " + ct.getId() + " was interrupted");
@@ -37,7 +37,7 @@ public class EventBarrier extends AbstractEventBarrier {
 		try {
 			while (consumerList.size()>0) { 
 				System.out.println("Waking up all Threads");
-				ct.wait();
+				this.wait();
 			}
 		} catch (InterruptedException e) {
 			System.out.println("Thread: " + ct.getId() + " was interrupted");
