@@ -1,14 +1,24 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class UnboundedSingleElevator extends AbstractElevator{
 	boolean doorOpen;
 	boolean inTransit;
 	int currentFloor;
-	HashMap<Integer, Thread> RiderList;
+	boolean goingUp;
+	HashMap<Integer, ArrayList<Thread>> riderList;
 	
 	public UnboundedSingleElevator(int numFloors, int elevatorId,
 			int maxOccupancyThreshold) {
 		super(numFloors, elevatorId, maxOccupancyThreshold);
+		riderList = new HashMap<Integer, ArrayList<Thread>>();
+		for(int i=0; i < numFloors; i++){
+			riderList.put(i,new ArrayList<Thread>());
+		}
+		currentFloor = 1;
+		inTransit = false;
+		doorOpen = false;
+		goingUp = false;
 		// TODO Auto-generated constructor stub
 	}
 
@@ -22,6 +32,7 @@ public class UnboundedSingleElevator extends AbstractElevator{
 				System.out.println("Elevator cannot open while in transit");
 				e.printStackTrace();
 			}
+			
 		}
 		doorOpen = true;
 		notifyAll();
@@ -36,12 +47,26 @@ public class UnboundedSingleElevator extends AbstractElevator{
 	@Override
 	public void VisitFloor(int floor) {
 		// TODO Auto-generated method stub
-		
+		while(doorOpen){
+			try {
+				this.wait();
+			} catch (InterruptedException e) {
+				System.out.println("Elevator moved while door was open");
+				e.printStackTrace();
+			}
+		}
+		for(int i=0; i< riderList.get(floor).size();i++){
+			notify();
+		}
 	}
 
 	@Override
 	public synchronized boolean Enter() {
-		if(this.doorOpen){
+		Thread rider = Thread.currentThread();
+		while(doorOpen && currentFloor == rider.getRequestedFloor()){
+			Thread.currentThread().wait();
+		}
+		if(this.doorOpen && currentFloor == .getRequestedFloor()){
 			return true;
 		}
 		//Need to check if this.currentFloor is equal to the fromFloor under Building, but I'm not sure how to do that.
@@ -49,17 +74,15 @@ public class UnboundedSingleElevator extends AbstractElevator{
 	}
 
 	@Override
-	public void Exit() {
-		if(this.doorOpen){
-			//Need to have list of people in elevator, and then take them off the list.
-		}
+	public synchronized void Exit() {
+		
+		
 		// TODO Auto-generated method stub
 	}
 
 	@Override
 	public void RequestFloor(int floor) {
 		// TODO Auto-generated method stub
-		
+		riderList.get(floor).add(Thread.currentThread());
 	}
-	
 }
