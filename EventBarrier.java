@@ -3,59 +3,58 @@ import java.util.ArrayList;
 
 public class EventBarrier extends AbstractEventBarrier {
 
-	private ArrayList<Thread> consumerList;
-
-
+	private boolean isProgressing;
+	private int counter;
+	
 	/** 
 	 * Instantiate EventBarrier
 	 */
 	public EventBarrier() {
-		consumerList = new ArrayList<Thread>();
+		isProgressing = false;
+		counter = 0;
 	}
 
 	@Override
 	public synchronized void arrive() {
-		Thread ct = Thread.currentThread();		
-		System.out.println("Thread: " + ct.getId() + " arrived at event barrier");
-		consumerList.add(ct);
+	
+		System.out.println("Thread: " + Thread.currentThread().getId() + " arrived at event barrier");
+		counter++;
 		try {
 			this.wait();
 		} catch (InterruptedException e) {
-			System.out.println("Thread: " + ct.getId() + " was interrupted");
+			System.out.println("Thread: " + Thread.currentThread().getId() + " was interrupted");
 			e.printStackTrace();
 		}
 	}
 
 	@Override
 	public synchronized void raise() {
-		notifyAll();
-		Thread ct = Thread.currentThread();
-		try {
-			while (waiters() > 0) { 
-				System.out.println("Waking up all Threads");
-				this.wait();
+		isProgressing = true;
+		while(isProgressing) {
+			notifyAll();
+			try {
+					System.out.println("Waking up all Threads");
+					this.wait();
+			} catch (InterruptedException e) {
+					System.out.println("Thread: " + Thread.currentThread().getId() + " was interrupted");
+					e.printStackTrace();
 			}
-		} catch (InterruptedException e) {
-			System.out.println("Thread: " + ct.getId() + " was interrupted");
-			e.printStackTrace();
 		}
-
 		System.out.println("All Threads complete");
 	}
 
 	@Override
 	public synchronized void complete() {
-		Thread ct = Thread.currentThread();
-		consumerList.remove(ct);
-		System.out.println("Thread " + ct.getId() + " has completed running. " 
-				+ waiters() + " Threads remain");
-		if(waiters() == 0) {
-			notifyAll();
-		}
+		counter--;
+		System.out.println("Thread " + Thread.currentThread().getId() + " has completed running. " 
+				+ counter + " Threads remain");
+		isProgressing = !(counter==0);
+		notifyAll();
+		
 	}
 
 	@Override
 	public synchronized int waiters() {
-		return consumerList.size();
+		return counter;
 	}
 }
