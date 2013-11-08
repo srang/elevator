@@ -2,9 +2,22 @@ public class TestEventBarrier {
 	public static void test() {
 		EventBarrier evBar = new EventBarrier();
 		System.out.println("Created a new EventBarrier");
-		for(int i = 0; i < 10; i++) {
+		for(int i = 0; i < 10; i++){
 			Thread t = new helperThread(evBar);
-			t.run();
+			t.start();
+			System.out.println("Creating a new Thread " + t.getId());
+		}
+		System.out.println("Call raise from Thread " + Thread.currentThread().getId());
+		evBar.raise();
+		for(int i = 0; i < 10; i++){
+			Thread t = new helperThread(evBar);
+			t.start();
+			System.out.println("Creating a new Thread " + t.getId());
+		}
+		for(int i = 0; i < 10; i++){
+			Thread t = new helperThread(evBar);
+			t.start();
+			System.out.println("Creating a new Thread " + t.getId());
 		}
 		evBar.raise();
 	}
@@ -14,8 +27,8 @@ class helperThread extends Thread {
 	public helperThread(EventBarrier eb) {
 		myEB = eb;
 	}
-	public void run() {
-		System.out.println("Created a new Thread");    
+	public void run() {  
 		myEB.arrive();
+		myEB.complete();
 	}
 }

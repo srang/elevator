@@ -19,25 +19,21 @@ public class EventBarrier extends AbstractEventBarrier {
 		System.out.println("Thread: " + ct.getId() + " arrived at event barrier");
 		consumerList.add(ct);
 		try {
-			while(consumerList != null){ 
-				ct.wait();
-			}
+			this.wait();
 		} catch (InterruptedException e) {
 			System.out.println("Thread: " + ct.getId() + " was interrupted");
 			e.printStackTrace();
 		}
-		complete();
 	}
 
 	@Override
 	public synchronized void raise() {
 		notifyAll();
 		Thread ct = Thread.currentThread();
-
 		try {
-			while (consumerList.size()>0) { 
+			while (waiters() > 0) { 
 				System.out.println("Waking up all Threads");
-				ct.wait();
+				this.wait();
 			}
 		} catch (InterruptedException e) {
 			System.out.println("Thread: " + ct.getId() + " was interrupted");
@@ -51,7 +47,11 @@ public class EventBarrier extends AbstractEventBarrier {
 	public synchronized void complete() {
 		Thread ct = Thread.currentThread();
 		consumerList.remove(ct);
-		System.out.println("Thread " + ct.getId() + " has completed running");
+		System.out.println("Thread " + ct.getId() + " has completed running. " 
+				+ waiters() + " Threads remain");
+		if(waiters() == 0) {
+			notifyAll();
+		}
 	}
 
 	@Override
