@@ -12,7 +12,7 @@ public class TestEventBarrier {
 			evBar.raise();
 		}
 	}
-} 
+}
 class helperThread extends Thread {
 	private EventBarrier myEB;
 	public helperThread(EventBarrier eb) {
