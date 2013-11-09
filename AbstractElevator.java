@@ -21,7 +21,7 @@ public abstract class AbstractElevator {
 	/**
 	 * Elevator control interface: invoked by Elevator thread.
  	 */
-	public abstract void setBuilding(AbstractBuilding building);
+
 	/* Signal incoming and outgoing riders */
 	public abstract void OpenDoors(); 	
 
@@ -33,7 +33,9 @@ public abstract class AbstractElevator {
 
 	/* Go to a requested floor */
 	public abstract void VisitFloor(int floor);
-
+	
+	/*Processes the next request where "next" is not always necessarily time stamp based*/
+	public abstract void ProcessNextRequest();
 
 	/**
 	 * Elevator rider interface (part 1): invoked by rider threads. 

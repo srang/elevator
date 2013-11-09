@@ -4,23 +4,24 @@
  *
  */
 public class Rider extends Thread{
+	private final int UP = 0;
+	private final int DOWN = 1;
 	private int requestedFloor;
 	private int originFloor;
 	private AbstractBuilding myBuilding;
-	private AbstractElevator.direction requestedDirection;
+	private int requestedDirection;
 	
 	public Rider(int desiredFloor, int currentFloor, AbstractBuilding building){
 		this.requestedFloor = desiredFloor;
 		this.originFloor = currentFloor;
 		this.myBuilding = building;
-		requestedDirection = requestedFloor > originFloor ? AbstractElevator.direction.MOVING_UP 
-				: AbstractElevator.direction.MOVING_DOWN; 
+		requestedDirection = requestedFloor > originFloor ? UP : DOWN; 
 	}
 	
 	public int getRequestedFloor(){
 		return this.requestedFloor;
 	}
-	public AbstractElevator.direction getRequestedDirection(){
+	public int getRequestedDirection(){
 		return this.requestedDirection;
 	}
 	public int getOriginFloor(){
@@ -34,9 +35,8 @@ public class Rider extends Thread{
 		} else {
 			myElevator = myBuilding.CallDown(originFloor);
 		}
-		myElevator.setBuilding(myBuilding);
 		while(!(myElevator.Enter())) {
-			if(requestedDirection == AbstractElevator.direction.MOVING_UP) { 
+			if(requestedDirection == UP) { 
 				myElevator = myBuilding.CallUp(originFloor);
 			} else {
 				myElevator = myBuilding.CallDown(originFloor);

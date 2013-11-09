@@ -1,10 +1,9 @@
 import java.util.ArrayList;
 
-
 public class SingleBuildingVersion2 extends AbstractBuilding{
 	EventBarrier[] barrierList;
-	int UP = 0;
-	int DOWN = 1;
+	static final int UP = 0;
+	static final int DOWN = 1;
 	SingleElevatorVersion2 elevator;
 	
 	public SingleBuildingVersion2(int numFloors, int numElevators) {
@@ -21,7 +20,7 @@ public class SingleBuildingVersion2 extends AbstractBuilding{
 		EventBarrier eb = barrierList[fromFloor-1];
 		elevator.ReqeuestService(fromFloor, UP);
 		eb.arrive();
-		return null;
+		return elevator;
 	}
 
 	@Override
@@ -29,7 +28,6 @@ public class SingleBuildingVersion2 extends AbstractBuilding{
 		EventBarrier eb = barrierList[fromFloor-1];
 		elevator.ReqeuestService(fromFloor, DOWN);
 		eb.arrive();
-		return null;
+		return elevator;
 	}
-
 }
