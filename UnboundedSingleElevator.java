@@ -5,8 +5,10 @@ public class UnboundedSingleElevator extends AbstractElevator{
 	boolean doorOpen;
 	boolean inTransit;
 	int currentFloor;
-	boolean goingUp;
 	HashMap<Integer, ArrayList<Thread>> riderList;
+	direction elevator_Direction;
+	AbstractBuilding myBuilding;
+	
 	
 	public UnboundedSingleElevator(int numFloors, int elevatorId,
 			int maxOccupancyThreshold) {
@@ -18,10 +20,13 @@ public class UnboundedSingleElevator extends AbstractElevator{
 		currentFloor = 1;
 		inTransit = false;
 		doorOpen = false;
-		goingUp = false;
-		// TODO Auto-generated constructor stub
+		elevator_Direction = direction.NOT_MOVING;
 	}
-
+	
+	public void setBuilding(AbstractBuilding building){
+		myBuilding = building;
+	}
+	
 	@Override
 	public synchronized void OpenDoors() {
 		// TODO Auto-generated method stub
@@ -34,60 +39,61 @@ public class UnboundedSingleElevator extends AbstractElevator{
 			}
 			
 		}
-		doorOpen = true;
-		notifyAll();
+		//elevator_Direction = direction.MOVING_UP;
+		myBuilding.riderQueue.get(currentFloor).notify();
 	}
 
 	@Override
-	public void ClosedDoors() {
+	public synchronized void ClosedDoors() {
+		doorOpen = false;
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void VisitFloor(int floor) {
-		// TODO Auto-generated method stub
-		while(doorOpen){
+		currentFloor = floor;
+		OpenDoors();
+		while(riderList.get(currentFloor).size()>0){
 			try {
 				this.wait();
 			} catch (InterruptedException e) {
-				System.out.println("Elevator moved while door was open");
 				e.printStackTrace();
 			}
 		}
-		for(int i=0; i< riderList.get(floor).size();i++){
-			notify();
-		}
+		ClosedDoors();		
 	}
 
 	@Override
 	public synchronized boolean Enter() {
-		Thread rider = Thread.currentThread();
-		while(doorOpen && currentFloor == 1){
-			try {
-				this.wait();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		if(this.doorOpen && currentFloor == 1){
+		Thread riderThread = Thread.currentThread();
+		Rider rider = (Rider) riderThread;
+		if(doorOpen && currentFloor == rider.getRequestedFloor() && 
+				elevator_Direction == rider.getRequestedDirection()){
 			return true;
-		}
-		//Need to check if this.currentFloor is equal to the fromFloor under Building, but I'm not sure how to do that.
-		return false;
+		} return false;
 	}
 
 	@Override
 	public synchronized void Exit() {
-		
-		
+		Thread riderThread = Thread.currentThread();
+		Rider rider = (Rider) riderThread;
+		riderList.get(rider.getRequestedFloor()).remove(riderThread);
 		// TODO Auto-generated method stub
 	}
 
 	@Override
 	public void RequestFloor(int floor) {
-		// TODO Auto-generated method stub
+		Thread riderThread = Thread.currentThread();
+		Rider rider = (Rider) riderThread;
 		riderList.get(floor).add(Thread.currentThread());
+		while(!doorOpen && floor != rider.getRequestedFloor()){
+			try {
+				riderThread.wait();
+			} catch (InterruptedException e) {
+				System.out.println("Rider tried to exit while elevator was in transit/door wasn't open");
+				e.printStackTrace();
+			}
+		}
 	}
 }
