@@ -19,7 +19,7 @@ public abstract class AbstractElevator {
 	}
 
 	/**
-	 * Elevator control inferface: invoked by Elevator thread.
+	 * Elevator control interface: invoked by Elevator thread.
  	 */
 	public abstract void setBuilding(AbstractBuilding building);
 	/* Signal incoming and outgoing riders */
