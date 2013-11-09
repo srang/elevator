@@ -20,7 +20,7 @@ public class TestEventBarrier {
 			
 		}
 	}
-} 
+}
 class helperThread extends Thread {
 	private EventBarrier myEB;
 	public helperThread(EventBarrier eb) {
