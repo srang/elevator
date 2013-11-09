@@ -1,4 +1,8 @@
-
+/**
+ * 
+ * @author Sam Rang
+ *
+ */
 public class Rider extends Thread{
 	private int requestedFloor;
 	private int originFloor;

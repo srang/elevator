@@ -63,10 +63,15 @@ public class UnboundedSingleElevator extends AbstractElevator{
 	@Override
 	public synchronized boolean Enter() {
 		Thread rider = Thread.currentThread();
-		while(doorOpen && currentFloor == rider.getRequestedFloor()){
-			Thread.currentThread().wait();
+		while(doorOpen && currentFloor == 1){
+			try {
+				this.wait();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		if(this.doorOpen && currentFloor == .getRequestedFloor()){
+		if(this.doorOpen && currentFloor == 1){
 			return true;
 		}
 		//Need to check if this.currentFloor is equal to the fromFloor under Building, but I'm not sure how to do that.
