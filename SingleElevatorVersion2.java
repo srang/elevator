@@ -6,6 +6,7 @@ public class SingleElevatorVersion2 extends AbstractElevator {
 	static final int DOWN = 1;
 	static int NOT_MOVING = 2;
 	EventBarrier[] inBarrierList;
+	EventBarrier[] outBarrierList;
 	int currentFloor = 1;
 	boolean[][] Outside_RequestList;
 	boolean[] Inside_RequestList;
@@ -15,12 +16,12 @@ public class SingleElevatorVersion2 extends AbstractElevator {
 	//EventBarrier eb;
 	
 	public SingleElevatorVersion2(int numFloors, int elevatorId,
-			int maxOccupancyThreshold, EventBarrier[] inBarrierList, EventBarrier outBarrier) {
+			int maxOccupancyThreshold, EventBarrier[] inBarrierList, EventBarrier[] outBarrierList) {
 		super(numFloors, elevatorId, maxOccupancyThreshold);
 		this.Outside_RequestList = new boolean[numFloors][2];
 		this.Inside_RequestList = new boolean[numFloors];
 		this.inBarrierList = inBarrierList;
-		this.outBarrier = outBarrier;
+		this.outBarrierList = outBarrierList;
 		riderList = new ArrayList<Rider>();
 	}
 
@@ -28,10 +29,10 @@ public class SingleElevatorVersion2 extends AbstractElevator {
 	/*Called by Elevator and opens the door. Waits for 
 	all rider threads to come in by calling raise from EventBarrier*/
 	public void OpenDoors() {
-		Inside_RequestList[currentFloor] = false;
 		System.out.println("Doors will now open");
-		outBarrier.raise();
+		outBarrierList[currentFloor].raise();
 		inBarrierList[currentFloor].raise();
+		Inside_RequestList[currentFloor] = false;
 		ClosedDoors();
 	}
 
@@ -47,6 +48,13 @@ public class SingleElevatorVersion2 extends AbstractElevator {
 	/*Visits indicated floor in parameter, and after visiting, door should open 
 	(assuming VisitFloor is called only on floors that have actually been requested)*/
 	public void VisitFloor(int floor) {
+		System.out.println("Going to floor "+ (floor+1));
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		currentFloor = floor;
 		OpenDoors();
 	}
@@ -74,15 +82,16 @@ public class SingleElevatorVersion2 extends AbstractElevator {
 		Thread riderThread = Thread.currentThread();
 		Rider rider = (Rider) riderThread;
 		if(currentFloor == rider.getRequestedFloor()-1){
-			outBarrier.complete();
-			riderList.remove(rider);
 			System.out.println("Thread got off");
+			outBarrierList[currentFloor].complete();
+			riderList.remove(rider);
 		}
 	}
 
 	@Override
 	public void RequestFloor(int floor) {
-		Inside_RequestList[floor-1] = true;	
+		Inside_RequestList[floor-1] = true;
+		outBarrierList[floor-1].arrive();
 	}
 	
 	public void ReqeuestService(int floor, int direction){
@@ -94,7 +103,6 @@ public class SingleElevatorVersion2 extends AbstractElevator {
 		if(currentDirection == UP){
 			for(int i=currentFloor; i < Inside_RequestList.length; i++){
 				if(Inside_RequestList[i] || Outside_RequestList[i][UP]){
-					System.out.println("Next request is to " + (i+1) + " floor");
 					System.out.println("Next request (UP) is to F" + (i+1));
 					VisitFloor(i);
 					break;
@@ -104,7 +112,6 @@ public class SingleElevatorVersion2 extends AbstractElevator {
 		if(currentDirection == DOWN){
 			for(int i=currentFloor; i >-1; i--){
 				if(Inside_RequestList[i] || Outside_RequestList[i][DOWN]){
-					System.out.println("Next request is to " + (i+1) + " floor");
 					System.out.println("Next request (DOWN) is to F" + (i+1));
 					VisitFloor(i);
 					break;

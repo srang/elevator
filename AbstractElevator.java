@@ -4,7 +4,6 @@ public abstract class AbstractElevator {
 	protected int numFloors; 
 	protected int elevatorId;
 	protected int maxOccupancyThreshold;
-	EventBarrier outBarrier;
 	
 	public enum direction{
 		MOVING_DOWN, MOVING_UP, NOT_MOVING

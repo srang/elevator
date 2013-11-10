@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class SingleBuildingVersion2 extends AbstractBuilding{
 	EventBarrier[] inBarrierList; //EventBarrier list for people trying to get in the elevator from the outside
-	EventBarrier outBarrier;
+	EventBarrier[] outBarrierList;
 	static final int UP = 0;
 	static final int DOWN = 1;
 	SingleElevatorVersion2 elevator;
@@ -10,11 +10,12 @@ public class SingleBuildingVersion2 extends AbstractBuilding{
 	public SingleBuildingVersion2(int numFloors, int numElevators) {
 		super(numFloors, numElevators);
 		inBarrierList = new EventBarrier[numFloors];
-		outBarrier = new EventBarrier();
+		outBarrierList = new EventBarrier[numFloors];
 		for(int i=0; i< numFloors; i++){
 			inBarrierList[i] = new EventBarrier();
+			outBarrierList[i] = new EventBarrier();
 		}
-		elevator = new SingleElevatorVersion2(numFloors,0, Integer.MAX_VALUE, inBarrierList, outBarrier);
+		elevator = new SingleElevatorVersion2(numFloors,0, Integer.MAX_VALUE, inBarrierList, outBarrierList);
 	}
 
 	@Override
