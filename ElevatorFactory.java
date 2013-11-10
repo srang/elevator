@@ -43,7 +43,15 @@ public class ElevatorFactory {
 		int floors = Integer.parseInt(parameters[0]);
 		int elevators = Integer.parseInt(parameters[1]);
 		int riders = Integer.parseInt(parameters[2]);
-		int capacity = Integer.parseInt(parameters[3]);
+		int capacity;
+		if(parameters[3] == "i")
+		{
+			capacity = Integer.MAX_VALUE;
+		}
+		else
+		{
+			capacity = Integer.parseInt(parameters[3]);
+		}
 		SingleBuildingVersion2 sb = new SingleBuildingVersion2(floors, elevators, capacity);
 		List<Rider> myRiders = new ArrayList<Rider>();
 		List<Elevator> myElevators = new ArrayList<Elevator>();
