@@ -16,8 +16,8 @@ public class EventBarrier extends AbstractEventBarrier {
 
 	@Override
 	public synchronized void arrive() {
-
-		//System.out.println("Thread: " + Thread.currentThread().getId() + " arrived at event barrier");
+		
+		System.out.println("Thread: " + Thread.currentThread().getId() + " arrived at event barrier");
 		counter++;
 		while(!isProgressing){
 			try {
@@ -35,21 +35,21 @@ public class EventBarrier extends AbstractEventBarrier {
 		while(isProgressing) {		
 			notifyAll();
 			try {
-				//System.out.println("Waking up all Threads");
+				System.out.println("Waking up all Threads");
 				this.wait();
 			} catch (InterruptedException e) {
 				System.out.println("Thread: " + Thread.currentThread().getId() + " was interrupted");
 				e.printStackTrace();
 			}
 		}
-		//System.out.println("All Threads complete");
+		System.out.println("All Threads complete");
 	}
 
 	@Override
 	public synchronized void complete() {
 		counter--;
-		//System.out.println("Thread " + Thread.currentThread().getId() + " has completed running. " 
-			//	+ counter + " Threads remain");
+		System.out.println("Thread " + Thread.currentThread().getId() + " has completed running. " 
+				+ counter + " Threads remain");
 		isProgressing = !(counter==0);
 		notifyAll();
 	}

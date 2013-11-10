@@ -22,7 +22,7 @@ public class SingleElevatorBuilding extends AbstractBuilding{
 	public AbstractElevator CallUp(int fromFloor) {
 		EventBarrier eb = inBarrierList[fromFloor-1];
 		elevator.ReqeuestService(fromFloor, UP);
-		ElevatorMain.writer.println("Rider has called for the elevator from floor " + fromFloor);
+		System.out.println("Rider has called for the elevator from floor " + fromFloor);
 		eb.arrive();
 		return elevator;
 	}
@@ -31,7 +31,7 @@ public class SingleElevatorBuilding extends AbstractBuilding{
 	public AbstractElevator CallDown(int fromFloor) {
 		EventBarrier eb = inBarrierList[fromFloor-1];
 		elevator.ReqeuestService(fromFloor, DOWN);
-		ElevatorMain.writer.println("Rider has called for the elevator from floor " + fromFloor);
+		System.out.println("Rider has called for the elevator from floor " + fromFloor);
 		eb.arrive();
 		return elevator;
 	}

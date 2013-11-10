@@ -19,12 +19,10 @@ public class ElevatorMain {
 			e.printStackTrace();
 		}
 		
-		ElevatorFactory.open();
-		
 		if(args.length==0) {
-			//ElevatorTest.test();
+			ElevatorFactory.open();
 			//System.out.println("Not enough arguments");
-			writer.println("Not enough Arguments");
+			//writer.println("Not enough Arguments");
 		} 
 		else if(args.length > 1) {
 			System.out.println("Too many arguments");
