@@ -74,6 +74,7 @@ public class SingleElevatorVersion2 extends AbstractElevator {
 		Thread riderThread = Thread.currentThread();
 		Rider rider = (Rider) riderThread;
 		riderList.remove(rider);
+		System.out.println("Thread got off");
 	}
 
 	@Override
