@@ -19,7 +19,6 @@ public class EventBarrier extends AbstractEventBarrier {
 
 		System.out.println("Thread: " + Thread.currentThread().getId() + " arrived at event barrier");
 		counter++;
-		System.out.println(counter);
 		while(!isProgressing){
 			try {
 				this.wait();
@@ -32,7 +31,6 @@ public class EventBarrier extends AbstractEventBarrier {
 
 	@Override
 	public synchronized void raise() {
-		System.out.println("af" + counter);
 		isProgressing = !(counter==0);
 		while(isProgressing) {
 			

@@ -63,6 +63,7 @@ public class SingleElevatorVersion2 extends AbstractElevator {
 			riderList.add(rider);
 			eb.complete();
 			System.out.println("Thread has entered");
+			Outside_RequestList[currentFloor][currentDirection] = false;
 			return true;
 		}
 		return false;
@@ -73,6 +74,7 @@ public class SingleElevatorVersion2 extends AbstractElevator {
 		Thread riderThread = Thread.currentThread();
 		Rider rider = (Rider) riderThread;
 		riderList.remove(rider);
+		System.out.println("Thread got off");
 	}
 
 	@Override
@@ -89,6 +91,7 @@ public class SingleElevatorVersion2 extends AbstractElevator {
 		if(currentDirection == UP){
 			for(int i=currentFloor; i < Inside_RequestList.length; i++){
 				if(Inside_RequestList[i] || Outside_RequestList[i][UP]){
+					System.out.println("Next request is to " + (i+1) + " floor");
 					System.out.println("Next request (UP) is to F" + (i+1));
 					VisitFloor(i);
 					break;
@@ -98,6 +101,7 @@ public class SingleElevatorVersion2 extends AbstractElevator {
 		if(currentDirection == DOWN){
 			for(int i=currentFloor; i >-1; i--){
 				if(Inside_RequestList[i] || Outside_RequestList[i][DOWN]){
+					System.out.println("Next request is to " + (i+1) + " floor");
 					System.out.println("Next request (DOWN) is to F" + (i+1));
 					VisitFloor(i);
 					break;
