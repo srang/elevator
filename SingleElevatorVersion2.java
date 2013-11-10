@@ -89,7 +89,7 @@ public class SingleElevatorVersion2 extends AbstractElevator {
 		if(currentDirection == UP){
 			for(int i=currentFloor; i < Inside_RequestList.length; i++){
 				if(Inside_RequestList[i] || Outside_RequestList[i][UP]){
-					System.out.println("Next request is to " + i + " floor");
+					System.out.println("Next request (UP) is to F" + (i+1));
 					VisitFloor(i);
 					break;
 				}
@@ -98,6 +98,7 @@ public class SingleElevatorVersion2 extends AbstractElevator {
 		if(currentDirection == DOWN){
 			for(int i=currentFloor; i >-1; i--){
 				if(Inside_RequestList[i] || Outside_RequestList[i][DOWN]){
+					System.out.println("Next request (DOWN) is to F" + (i+1));
 					VisitFloor(i);
 					break;
 				}
