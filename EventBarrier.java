@@ -53,7 +53,10 @@ public class EventBarrier extends AbstractEventBarrier {
 		isProgressing = !(counter==0);
 		notifyAll();
 	}
-
+	public synchronized void couldNotComplete() {
+		isProgressing = false;
+		notifyAll();
+	}
 	@Override
 	public synchronized int waiters() {
 		return counter;

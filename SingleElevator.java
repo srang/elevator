@@ -73,7 +73,8 @@ public class SingleElevator extends AbstractElevator {
 		EventBarrier inBarrier = inBarrierList[currentFloor];
 		Thread riderThread = Thread.currentThread();
 		Rider rider = (Rider) riderThread;
-		if(currentDirection == rider.getRequestedDirection() && riderList.size()<maxOccupancyThreshold){
+		int prevSize = riderList.size();
+		if(currentDirection == rider.getRequestedDirection() && riderList.size() < maxOccupancyThreshold){
 			System.out.println("Rider " + rider.getID() + " is now entering");
 			Ordered_Outside_RequestList.remove(rider);
 			riderList.add(rider);
@@ -82,8 +83,11 @@ public class SingleElevator extends AbstractElevator {
 			Outside_RequestList[currentFloor][currentDirection] = false;
 			return true;
 		}
-		else if(riderList.size()>=maxOccupancyThreshold){
+		else if(prevSize>=maxOccupancyThreshold){
 			System.out.println("Elevator was full. Rider " + rider.getID() + " could not enter.");
+			//Ordered_Outside_RequestList.remove(rider);
+			//Ordered_Outside_RequestList.add(rider);
+			inBarrier.couldNotComplete();
 		}
 		return false;
 	}
