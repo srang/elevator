@@ -44,7 +44,7 @@ public class ElevatorFactory {
 		int elevators = Integer.parseInt(parameters[1]);
 		int riders = Integer.parseInt(parameters[2]);
 		int capacity = Integer.parseInt(parameters[3]);
-		SingleBuildingVersion2 sb = new SingleBuildingVersion2(floors, elevators);
+		SingleBuildingVersion2 sb = new SingleBuildingVersion2(floors, elevators, capacity);
 		List<Rider> myRiders = new ArrayList<Rider>();
 		List<Elevator> myElevators = new ArrayList<Elevator>();
 		for(int i = 0; i < elevators; i++) {

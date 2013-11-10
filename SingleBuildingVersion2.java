@@ -7,7 +7,7 @@ public class SingleBuildingVersion2 extends AbstractBuilding{
 	static final int DOWN = 1;
 	SingleElevatorVersion2 elevator;
 	
-	public SingleBuildingVersion2(int numFloors, int numElevators) {
+	public SingleBuildingVersion2(int numFloors, int numElevators, int capacity) {
 		super(numFloors, numElevators);
 		inBarrierList = new EventBarrier[numFloors];
 		outBarrierList = new EventBarrier[numFloors];
@@ -15,7 +15,7 @@ public class SingleBuildingVersion2 extends AbstractBuilding{
 			inBarrierList[i] = new EventBarrier();
 			outBarrierList[i] = new EventBarrier();
 		}
-		elevator = new SingleElevatorVersion2(numFloors,0, Integer.MAX_VALUE, inBarrierList, outBarrierList);
+		elevator = new SingleElevatorVersion2(numFloors,0, capacity, inBarrierList, outBarrierList);
 	}
 
 	@Override
