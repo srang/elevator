@@ -46,12 +46,20 @@ public class ElevatorFactory {
 		int capacity = Integer.parseInt(parameters[3]);
 		SingleBuildingVersion2 sb = new SingleBuildingVersion2(floors, elevators);
 		List<Rider> myRiders = new ArrayList<Rider>();
+		List<Elevator> myElevators = new ArrayList<Elevator>();
+		for(int i = 0; i < elevators; i++) {
+			myElevators.add(new Elevator(sb));
+		}
 		while(s.hasNextLine()) {
 			String[] query = s.nextLine().split(" ");
 			int riderID = Integer.parseInt(query[0]);
 			int startFloor = Integer.parseInt(query[1]);
 			int endFloor = Integer.parseInt(query[2]);
 			Rider r = new Rider(riderID, startFloor, endFloor, sb);
+			r.start();
+		}
+		for(int i = 0; i < elevators; i++) {
+			myElevators.get(i).start();
 		}
 	}
 
