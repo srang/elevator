@@ -35,13 +35,14 @@ public class Rider extends Thread{
 		} else {
 			myElevator = myBuilding.CallDown(originFloor);
 		}
-		while(!(myElevator.Enter())) {
+		/*while(!(myElevator.Enter())) {
 			if(requestedDirection == UP) { 
 				myElevator = myBuilding.CallUp(originFloor);
 			} else {
 				myElevator = myBuilding.CallDown(originFloor);
 			}
-		} 
+		} */
+		myElevator.Enter();
 		myElevator.RequestFloor(requestedFloor);
 		myElevator.Exit();
 	}
