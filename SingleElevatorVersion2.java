@@ -108,7 +108,6 @@ public class SingleElevatorVersion2 extends AbstractElevator {
 
 	@Override
 	public void ProcessNextRequest() {
-		System.out.println("afefef\n");
 		if((riderList.isEmpty() || currentDirection == NOT_MOVING) && !Ordered_Outside_RequestList.isEmpty()){
 			System.out.println("All riders are off\n");
 			Rider rider = Ordered_Outside_RequestList.get(0);
