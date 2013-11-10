@@ -105,13 +105,13 @@ public class SingleElevatorVersion2 extends AbstractElevator {
 
 	@Override
 	public void ProcessNextRequest() {
-		/*if(riderList.isEmpty() && !Outside_RequestQueue.isEmpty()){
+		if(riderList.isEmpty() && !Outside_RequestQueue.isEmpty()){
 			Rider rider = Outside_RequestQueue.poll();
 			currentDirection = rider.getRequestedDirection();
 			String direction = currentDirection == UP ? "(UP)" : "(DOWN)";
 			System.out.println("Next request " + direction+ " is to F " + rider.getRequestedFloor());
 			VisitFloor(rider.getRequestedFloor());
-		}*/
+		}
 		if(currentDirection == UP){
 			for(int i=currentFloor; i < Inside_RequestList.length; i++){
 				if(Inside_RequestList[i] || Outside_RequestList[i][UP]){
