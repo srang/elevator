@@ -9,7 +9,7 @@ public class SingleElevatorVersion2 extends AbstractElevator {
 	int currentFloor;
 	boolean[][] Outside_RequestList;
 	boolean[] Inside_RequestList;
-	int currentDirection;
+	int currentDirection = UP;
 	ArrayList<Rider> riderList;
 	
 	EventBarrier eb;
@@ -23,20 +23,28 @@ public class SingleElevatorVersion2 extends AbstractElevator {
 	}
 
 	@Override
+	/*Called by Elevator and opens the door. Waits for 
+	all rider threads to come in by calling raise from EventBarrier*/
 	public void OpenDoors() {
 		eb = barrierList[currentFloor-1];
 		Inside_RequestList[currentFloor-1] = false;
+		System.out.println("Doors will now open");
 		eb.raise();
 		ClosedDoors();
+		System.out.println("shoudlnt print yet");
 	}
 
 	@Override
+	/*When the door closes, it is ready to move again to another 
+	 floor, and hence calls ProcessNextRequest()*/
 	public void ClosedDoors() {
 		System.out.println("Door is closed");
 		ProcessNextRequest();
 	}
 
 	@Override
+	/*Visits indicated floor in parameter, and after visiting, door should open 
+	(assuming VisitFloor is called only on floors that have actually been requested)*/
 	public void VisitFloor(int floor) {
 		eb = barrierList[floor-1];
 		currentFloor = floor;
@@ -44,13 +52,17 @@ public class SingleElevatorVersion2 extends AbstractElevator {
 	}
 
 	@Override
+	/*Called by rider threads, and makes them enter the elevator. Since the rider has already arrived at 
+	 * the event barrier, it completes in event barrier when the rider enters the elevator*/
 	public boolean Enter() {
 		eb = barrierList[currentFloor-1];
+		System.out.println("Rider is now entering");
 		Thread riderThread = Thread.currentThread();
 		Rider rider = (Rider) riderThread;
 		if(currentDirection == rider.getRequestedDirection()){
 			riderList.add(rider);
 			eb.complete();
+			System.out.println("Thread has entered");
 			return true;
 		}
 		return false;
@@ -77,6 +89,7 @@ public class SingleElevatorVersion2 extends AbstractElevator {
 		if(currentDirection == UP){
 			for(int i=currentFloor; i < Inside_RequestList.length; i++){
 				if(Inside_RequestList[i] || Outside_RequestList[i][UP]){
+					System.out.println("Next request is to " + i + " floor");
 					VisitFloor(i);
 					break;
 				}

@@ -21,6 +21,7 @@ public class EventBarrier extends AbstractEventBarrier {
 		counter++;
 		while(!isProgressing){
 			try {
+				System.out.println("Counter = " + counter);
 				this.wait();
 			} catch (InterruptedException e) {
 				System.out.println("Thread: " + Thread.currentThread().getId() + " was interrupted");
