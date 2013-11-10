@@ -22,7 +22,6 @@ public class ElevatorMain {
 		ElevatorFactory.open();
 		
 		if(args.length==0) {
-			ElevatorFactory.open();
 			//ElevatorTest.test();
 			//System.out.println("Not enough arguments");
 			writer.println("Not enough Arguments");
