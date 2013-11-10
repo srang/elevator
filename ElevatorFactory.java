@@ -44,7 +44,7 @@ public class ElevatorFactory {
 		int elevators = Integer.parseInt(parameters[1]);
 		int riders = Integer.parseInt(parameters[2]);
 		int capacity;
-		if(parameters[3] == "i")
+		if(parameters[3].equals("i"))
 		{
 			capacity = Integer.MAX_VALUE;
 		}

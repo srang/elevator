@@ -4,7 +4,8 @@ public class ElevatorMain {
 	public static void main(String[] args) {
 
 		if(args.length==0) {
-			ElevatorTest.test();
+			ElevatorFactory.open();
+			//ElevatorTest.test();
 			//System.out.println("Not enough arguments");
 		} 
 		else if(args.length > 2) {
