@@ -31,27 +31,14 @@ public class ElevatorMain {
 			System.out.println("Too many arguments");
 			writer.println("Too many arguments");
 		} 
-		else if(args[0].equals("p1"))
+		else if(args[0].equals("p1")) //Test cases for Event Barrier are "hard baked" into test class
 		{
 			System.out.println("Event Barrier:");
 			writer.println("Event Barrier:");
 			TestEventBarrier.test();
 		}
-		else if(args[0].equals("p2part1")) {
-			System.out.println("Single Unbounded Elevator:");
-			writer.println("Single Unbounded Elevator:");
-		}
-		else if(args[0].equals("p2part2")) {
-			System.out.println("Single Bounded Elevator:");
-			writer.println("Single Bounded Elevator:");
-			// call the elevator part2
-		}
-		else if(args[0].equals("p2part3")){
-			System.out.println("Multiple Bounded Elevators:");
-			writer.println("Multiple Bounded Elevators:");
-			// call the elevator part3
-		}
-		else if(args[0].equals("Inputfile")){
+		else if(args[0].equals("p2")){ //ElevatorFactory prompts for input file and figures out what type of elevator to
+										// create from there.
 			ElevatorFactory.open();
 		}
 		writer.close();
