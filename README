@@ -8,15 +8,15 @@
 
 	Name1: Sam Rang
 	NetId1: spr20
-	Time spent: 10 hours 	// Edit 
+	Time spent: 10 hours //edit
 
 	Name2: Shariq Iqbal
 	NetId2: sni
-	Time spent: 10 hours 	// Edit 
+	Time spent: 10 hours //edit
 
-	Name3: Full Name 	// Edit this accordingly
-	NetId3: fn	 	// Edit
-	Time spent: 10 hours 	// Edit 
+	Name3: Full Duke Kim 
+	NetId3: dk116
+	Time spent: 10 hours //edit
 
 /******************
  * Files to submit
@@ -35,6 +35,8 @@
 /* 
  * This section should contain the implementation details and a overview of the
  * results. 
+ 
+ **
 
  * You are required to provide a good README document including the
  * implementation details. In particular, you can use pseudocode to describe

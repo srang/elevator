@@ -96,4 +96,10 @@ public class UnboundedSingleElevator extends AbstractElevator{
 			}
 		}
 	}
+
+	@Override
+	public void ProcessNextRequest() {
+		// TODO Auto-generated method stub
+		
+	}
 }
