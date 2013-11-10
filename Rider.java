@@ -52,7 +52,6 @@ public class Rider extends Thread{
 				myElevator = myBuilding.CallDown(originFloor);
 			}
 		} */
-		System.out.println("f");
 		myElevator.Enter();
 		myElevator.RequestFloor(requestedFloor);
 		myElevator.Exit();

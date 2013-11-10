@@ -4,6 +4,5 @@ public class ElevatorTest {
 		Elevator elevator = new Elevator(myBuilding);
 		Rider rider = new Rider(1, 10, 2, myBuilding);
 		elevator.start();
-		rider.start();
 	}
 }

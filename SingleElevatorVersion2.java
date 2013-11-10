@@ -6,7 +6,7 @@ public class SingleElevatorVersion2 extends AbstractElevator {
 	static final int DOWN = 1;
 	static int NOT_MOVING = 2;
 	EventBarrier[] barrierList;
-	int currentFloor;
+	int currentFloor = 1;
 	boolean[][] Outside_RequestList;
 	boolean[] Inside_RequestList;
 	int currentDirection = UP;
@@ -20,18 +20,18 @@ public class SingleElevatorVersion2 extends AbstractElevator {
 		this.Outside_RequestList = new boolean[numFloors][2];
 		this.Inside_RequestList = new boolean[numFloors];
 		this.barrierList = barrierList;
+		riderList = new ArrayList<Rider>();
 	}
 
 	@Override
 	/*Called by Elevator and opens the door. Waits for 
 	all rider threads to come in by calling raise from EventBarrier*/
 	public void OpenDoors() {
-		eb = barrierList[currentFloor-1];
-		Inside_RequestList[currentFloor-1] = false;
+		eb = barrierList[currentFloor];
+		Inside_RequestList[currentFloor] = false;
 		System.out.println("Doors will now open");
 		eb.raise();
 		ClosedDoors();
-		System.out.println("shoudlnt print yet");
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public class SingleElevatorVersion2 extends AbstractElevator {
 	/*Visits indicated floor in parameter, and after visiting, door should open 
 	(assuming VisitFloor is called only on floors that have actually been requested)*/
 	public void VisitFloor(int floor) {
-		eb = barrierList[floor-1];
+		//eb = barrierList[floor];
 		currentFloor = floor;
 		OpenDoors();
 	}
@@ -55,7 +55,7 @@ public class SingleElevatorVersion2 extends AbstractElevator {
 	/*Called by rider threads, and makes them enter the elevator. Since the rider has already arrived at 
 	 * the event barrier, it completes in event barrier when the rider enters the elevator*/
 	public boolean Enter() {
-		eb = barrierList[currentFloor-1];
+		eb = barrierList[currentFloor];
 		System.out.println("Rider is now entering");
 		Thread riderThread = Thread.currentThread();
 		Rider rider = (Rider) riderThread;

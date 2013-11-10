@@ -8,7 +8,8 @@ public class Elevator extends Thread{
 	
 	@Override
 	public void run() {
-		while(1==1)
-		myElevator.ProcessNextRequest();
+		//while(1==1){
+			myElevator.ProcessNextRequest();
+		//}
 	}
 }

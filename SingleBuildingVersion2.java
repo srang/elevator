@@ -19,7 +19,7 @@ public class SingleBuildingVersion2 extends AbstractBuilding{
 	public AbstractElevator CallUp(int fromFloor) {
 		EventBarrier eb = barrierList[fromFloor-1];
 		elevator.ReqeuestService(fromFloor, UP);
-		System.out.println("Rider has called for the elevator from floor" + " fromFloor");
+		System.out.println("Rider has called for the elevator from floor " + fromFloor);
 		eb.arrive();
 		return elevator;
 	}
