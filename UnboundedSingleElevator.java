@@ -68,8 +68,9 @@ public class UnboundedSingleElevator extends AbstractElevator{
 	public synchronized boolean Enter() {
 		Thread riderThread = Thread.currentThread();
 		Rider rider = (Rider) riderThread;
-		if(doorOpen && currentFloor == rider.getRequestedFloor() && 
-				elevator_Direction == rider.getRequestedDirection()){
+		if(doorOpen && currentFloor == rider.getRequestedFloor() )  {
+				//&& elevator_Direction == rider.getRequestedDirection())
+				
 			return true;
 		} return false;
 	}
