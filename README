@@ -55,8 +55,9 @@
  * reached floor 3 before requesting service from 3 to 1. This would be an 
  * interesting addition to the problem but a pain. 
    
- *ASSUMPTION: If elevator is full and door opens, the thread will not get in but he will still stay in queue for requests (i.e.
- *he does not have to re-press the button.)
+ * ASSUMPTION: If elevator is full and door opens, the thread will not get in,
+ * and he will have to re-enter the queue of requests. (i.e. he must re-press
+ * the button).
 
  * You are required to provide a good README document including the
  * implementation details. In particular, you can use pseudocode to describe
