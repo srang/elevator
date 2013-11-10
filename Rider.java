@@ -1,4 +1,4 @@
-public class Rider extends Thread{
+public class Rider extends Thread implements Comparable{
 	private final int UP = 0;
 	private final int DOWN = 1;
 	private int requestedFloor;
@@ -55,5 +55,12 @@ public class Rider extends Thread{
 		myElevator.Enter();
 		myElevator.RequestFloor(requestedFloor);
 		myElevator.Exit();
+	}
+
+	@Override
+	public int compareTo(Object arg0) {
+		Integer thisID = this.getID();
+		Integer otherID = ((Rider) arg0).getID();
+		return thisID.compareTo(otherID);
 	}
 }
