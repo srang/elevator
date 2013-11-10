@@ -54,6 +54,20 @@ public class ElevatorFactory {
 		SingleElevatorBuilding sb = new SingleElevatorBuilding(floors, elevators, capacity);
 		List<Rider> myRiders = new ArrayList<Rider>();
 		List<Elevator> myElevators = new ArrayList<Elevator>();
+		
+		if(elevators == 1 && capacity == Integer.MAX_VALUE)
+		{
+			ElevatorMain.writer.println("Single Unbounded Elevator: ");
+		}
+		else if(elevators == 1)
+		{
+			ElevatorMain.writer.println("Single Bounded Elevator: ");
+		}
+		else
+		{
+			ElevatorMain.writer.println("Multiple Bounded Elevators");
+		}
+		
 		for(int i = 0; i < elevators; i++) {
 			myElevators.add(new Elevator(sb));
 		}
