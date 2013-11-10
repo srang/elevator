@@ -2,7 +2,7 @@
 public class Elevator extends Thread{
 	AbstractElevator myElevator;
 	
-	public Elevator(SingleBuildingVersion2 building){
+	public Elevator(SingleElevatorBuilding building){
 		myElevator = building.elevator;
 	}
 	
