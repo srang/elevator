@@ -52,9 +52,12 @@ public class Rider extends Thread {
 				myElevator = myBuilding.CallDown(originFloor);
 			}
 		} */
-		myElevator.Enter();
-		myElevator.RequestFloor(requestedFloor);
-		myElevator.Exit();
+			if(!myElevator.Enter()){
+				myElevator.inBarrierList[originFloor-1].arrive();
+			}
+			myElevator.RequestFloor(requestedFloor);
+			myElevator.Exit();
+
 	}
 	@Override
 	public boolean equals(Object arg){

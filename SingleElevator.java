@@ -12,6 +12,7 @@ public class SingleElevator extends AbstractElevator {
 	int currentDirection = UP;
 	ArrayList<Rider> riderList;
 	ArrayList<Rider> Ordered_Outside_RequestList;
+	boolean falsehood = false;
 	
 	public SingleElevator(int numFloors, int elevatorId,
 			int maxOccupancyThreshold, EventBarrier[] inBarrierList, EventBarrier[] outBarrierList) {
@@ -83,11 +84,18 @@ public class SingleElevator extends AbstractElevator {
 			Outside_RequestList[currentFloor][currentDirection] = false;
 			return true;
 		}
-		else if(prevSize>=maxOccupancyThreshold){
+		else if(currentDirection != rider.getRequestedDirection()){
+			Ordered_Outside_RequestList.remove(rider);
+			inBarrier.complete();
+			Outside_RequestList[currentFloor][currentDirection] = false;
+			return false;
+		}
+		else if(prevSize >= maxOccupancyThreshold){
 			System.out.println("Elevator was full. Rider " + rider.getID() + " could not enter.");
-			//Ordered_Outside_RequestList.remove(rider);
-			//Ordered_Outside_RequestList.add(rider);
-			inBarrier.couldNotComplete();
+			Ordered_Outside_RequestList.remove(rider);
+			inBarrier.complete();
+			Outside_RequestList[currentFloor][currentDirection] = false;
+			return false;
 		}
 		return false;
 	}
@@ -105,6 +113,7 @@ public class SingleElevator extends AbstractElevator {
 
 	@Override
 	public void RequestFloor(int floor) {
+		Rider rider = (Rider) Thread.currentThread();
 		Inside_RequestList[floor-1] = true;
 		outBarrierList[floor-1].arrive();
 	}
@@ -128,7 +137,7 @@ public class SingleElevator extends AbstractElevator {
 			return;
 		}
 		if(currentDirection == UP){
-			for(int i=currentFloor; i < Inside_RequestList.length; i++){
+			for(int i=currentFloor+1; i < Inside_RequestList.length; i++){
 				if(Inside_RequestList[i] || Outside_RequestList[i][UP]){
 					System.out.println("Next request (UP) is to F" + (i+1));
 					VisitFloor(i);
@@ -137,7 +146,7 @@ public class SingleElevator extends AbstractElevator {
 			}
 		}
 		if(currentDirection == DOWN){
-			for(int i=currentFloor; i >-1; i--){
+			for(int i=currentFloor-1; i >-1; i--){
 				if(Inside_RequestList[i] || Outside_RequestList[i][DOWN]){
 					System.out.println("Next request (DOWN) is to F" + (i+1));
 					VisitFloor(i);
