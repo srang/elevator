@@ -9,6 +9,7 @@ public class ElevatorTest {
 		rider2.start();
 		Rider rider3 = new Rider(3,15,12,myBuilding);
 		rider3.start();
+		
 		elevator.start();
 		//rider2.start();
 	}
