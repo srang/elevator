@@ -5,7 +5,7 @@ public class SingleBuildingVersion2 extends AbstractBuilding{
 	EventBarrier[] outBarrierList;
 	static final int UP = 0;
 	static final int DOWN = 1;
-	SingleElevatorVersion2 elevator;
+	SingleElevator elevator;
 	
 	public SingleBuildingVersion2(int numFloors, int numElevators, int capacity) {
 		super(numFloors, numElevators);
@@ -15,7 +15,7 @@ public class SingleBuildingVersion2 extends AbstractBuilding{
 			inBarrierList[i] = new EventBarrier();
 			outBarrierList[i] = new EventBarrier();
 		}
-		elevator = new SingleElevatorVersion2(numFloors,0, capacity, inBarrierList, outBarrierList);
+		elevator = new SingleElevator(numFloors,0, capacity, inBarrierList, outBarrierList);
 	}
 
 	@Override
@@ -31,6 +31,7 @@ public class SingleBuildingVersion2 extends AbstractBuilding{
 	public AbstractElevator CallDown(int fromFloor) {
 		EventBarrier eb = inBarrierList[fromFloor-1];
 		elevator.ReqeuestService(fromFloor, DOWN);
+		System.out.println("Rider has called for the elevator from floor " + fromFloor);
 		eb.arrive();
 		return elevator;
 	}

@@ -32,11 +32,10 @@ public class EventBarrier extends AbstractEventBarrier {
 	@Override
 	public synchronized void raise() {
 		isProgressing = !(counter==0);
-		while(isProgressing) {
-			
+		while(isProgressing) {		
 			notifyAll();
 			try {
-				System.out.println("Waking up all Threads");
+				//System.out.println("Waking up all Threads");
 				this.wait();
 			} catch (InterruptedException e) {
 				System.out.println("Thread: " + Thread.currentThread().getId() + " was interrupted");

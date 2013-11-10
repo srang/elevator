@@ -58,16 +58,19 @@ public class ElevatorFactory {
 		for(int i = 0; i < elevators; i++) {
 			myElevators.add(new Elevator(sb));
 		}
-		for(int i = 0; i < elevators; i++) {
-			myElevators.get(i).start();
-		}
 		while(s.hasNextLine()) {
 			String[] query = s.nextLine().split(" ");
 			int riderID = Integer.parseInt(query[0]);
 			int startFloor = Integer.parseInt(query[1]);
 			int endFloor = Integer.parseInt(query[2]);
-			Rider r = new Rider(riderID, startFloor, endFloor, sb);
-			r.start();
+			Rider r = new Rider(riderID, endFloor, startFloor, sb);
+			myRiders.add(r);
+		}
+		for(int i = 0; i<myRiders.size(); i++){
+			myRiders.get(i).start();
+		}
+		for(int i = 0; i < elevators; i++) {
+			myElevators.get(i).start();
 		}
 	}
 
