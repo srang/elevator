@@ -66,6 +66,7 @@ public class ElevatorFactory {
 			int riderID = Integer.parseInt(query[0]);
 			int startFloor = Integer.parseInt(query[1]);
 			int endFloor = Integer.parseInt(query[2]);
+			System.out.println(riderID + " " + startFloor + " " + endFloor);
 			Rider r = new Rider(riderID, startFloor, endFloor, sb);
 			r.start();
 		}

@@ -11,7 +11,7 @@ public class SingleElevatorVersion2 extends AbstractElevator {
 	int currentFloor = 1;
 	boolean[][] Outside_RequestList;
 	boolean[] Inside_RequestList;
-	int currentDirection = UP;
+	int currentDirection = NOT_MOVING;
 	ArrayList<Rider> riderList;
 	ArrayList<Rider> Ordered_Outside_RequestList;
 	
@@ -69,9 +69,12 @@ public class SingleElevatorVersion2 extends AbstractElevator {
 		System.out.println("Rider is now entering");
 		Thread riderThread = Thread.currentThread();
 		Rider rider = (Rider) riderThread;
+		System.out.println(currentDirection);
+		System.out.println(rider.getRequestedDirection());
 		if(currentDirection == rider.getRequestedDirection()){
 			Ordered_Outside_RequestList.remove(rider);
 			riderList.add(rider);
+			
 			inBarrier.complete();
 			System.out.println("Thread has entered");
 			Outside_RequestList[currentFloor][currentDirection] = false;
@@ -105,13 +108,15 @@ public class SingleElevatorVersion2 extends AbstractElevator {
 
 	@Override
 	public void ProcessNextRequest() {
-		if(riderList.isEmpty() && !Ordered_Outside_RequestList.isEmpty()){
+		System.out.println("afefef\n");
+		if((riderList.isEmpty() || currentDirection == NOT_MOVING) && !Ordered_Outside_RequestList.isEmpty()){
+			System.out.println("All riders are off\n");
 			Rider rider = Ordered_Outside_RequestList.get(0);
 			Ordered_Outside_RequestList.remove(0);
 			currentDirection = rider.getRequestedDirection();
 			String direction = currentDirection == UP ? "(UP)" : "(DOWN)";
 			System.out.println("Next request " + direction+ " is to F " + rider.getRequestedFloor());
-			VisitFloor(rider.getRequestedFloor());
+			VisitFloor(rider.getRequestedFloor()-1);
 		}
 		if(currentDirection == UP){
 			for(int i=currentFloor; i < Inside_RequestList.length; i++){
