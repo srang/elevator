@@ -13,7 +13,7 @@ public class SingleElevatorVersion2 extends AbstractElevator {
 	boolean[] Inside_RequestList;
 	int currentDirection = UP;
 	ArrayList<Rider> riderList;
-	PriorityQueue<Rider> Outside_RequestQueue;
+	ArrayList<Rider> Ordered_Outside_RequestList;
 	
 	//EventBarrier eb;
 	
@@ -24,7 +24,7 @@ public class SingleElevatorVersion2 extends AbstractElevator {
 		this.Inside_RequestList = new boolean[numFloors];
 		this.inBarrierList = inBarrierList;
 		this.outBarrierList = outBarrierList;
-		Outside_RequestQueue = new PriorityQueue<Rider>();
+		Ordered_Outside_RequestList = new ArrayList<Rider>();
 		riderList = new ArrayList<Rider>();
 	}
 
@@ -70,7 +70,7 @@ public class SingleElevatorVersion2 extends AbstractElevator {
 		Thread riderThread = Thread.currentThread();
 		Rider rider = (Rider) riderThread;
 		if(currentDirection == rider.getRequestedDirection()){
-			Outside_RequestQueue.remove(rider);
+			Ordered_Outside_RequestList.remove(rider);
 			riderList.add(rider);
 			inBarrier.complete();
 			System.out.println("Thread has entered");
@@ -99,14 +99,15 @@ public class SingleElevatorVersion2 extends AbstractElevator {
 	
 	public void ReqeuestService(int floor, int direction){
 		Rider rider = (Rider) Thread.currentThread();
-		Outside_RequestQueue.add(rider);
+		Ordered_Outside_RequestList.add(rider);
 		Outside_RequestList[floor-1][direction] = true;
 	}
 
 	@Override
 	public void ProcessNextRequest() {
-		if(riderList.isEmpty() && !Outside_RequestQueue.isEmpty()){
-			Rider rider = Outside_RequestQueue.poll();
+		if(riderList.isEmpty() && !Ordered_Outside_RequestList.isEmpty()){
+			Rider rider = Ordered_Outside_RequestList.get(0);
+			Ordered_Outside_RequestList.remove(0);
 			currentDirection = rider.getRequestedDirection();
 			String direction = currentDirection == UP ? "(UP)" : "(DOWN)";
 			System.out.println("Next request " + direction+ " is to F " + rider.getRequestedFloor());
