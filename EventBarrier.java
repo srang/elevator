@@ -33,7 +33,7 @@ public class EventBarrier extends AbstractEventBarrier {
 	@Override
 	public synchronized void raise() {
 		System.out.println("af" + counter);
-		isProgressing = true;
+		isProgressing = !(counter==0);
 		while(isProgressing) {
 			
 			notifyAll();
