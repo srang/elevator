@@ -54,6 +54,7 @@ public class Rider extends Thread{
 		} */
 		myElevator.Enter();
 		myElevator.RequestFloor(requestedFloor);
+		myElevator.outBarrier.arrive();
 		myElevator.Exit();
 	}
 }

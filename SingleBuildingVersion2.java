@@ -1,23 +1,25 @@
 import java.util.ArrayList;
 
 public class SingleBuildingVersion2 extends AbstractBuilding{
-	EventBarrier[] barrierList;
+	EventBarrier[] inBarrierList; //EventBarrier list for people trying to get in the elevator from the outside
+	EventBarrier outBarrier;
 	static final int UP = 0;
 	static final int DOWN = 1;
 	SingleElevatorVersion2 elevator;
 	
 	public SingleBuildingVersion2(int numFloors, int numElevators) {
 		super(numFloors, numElevators);
-		barrierList = new EventBarrier[numFloors];
+		inBarrierList = new EventBarrier[numFloors];
+		outBarrier = new EventBarrier();
 		for(int i=0; i< numFloors; i++){
-			barrierList[i] = new EventBarrier();
+			inBarrierList[i] = new EventBarrier();
 		}
-		elevator = new SingleElevatorVersion2(numFloors,0, Integer.MAX_VALUE, barrierList);
+		elevator = new SingleElevatorVersion2(numFloors,0, Integer.MAX_VALUE, inBarrierList, outBarrier);
 	}
 
 	@Override
 	public AbstractElevator CallUp(int fromFloor) {
-		EventBarrier eb = barrierList[fromFloor-1];
+		EventBarrier eb = inBarrierList[fromFloor-1];
 		elevator.ReqeuestService(fromFloor, UP);
 		System.out.println("Rider has called for the elevator from floor " + fromFloor);
 		eb.arrive();
@@ -26,7 +28,7 @@ public class SingleBuildingVersion2 extends AbstractBuilding{
 
 	@Override
 	public AbstractElevator CallDown(int fromFloor) {
-		EventBarrier eb = barrierList[fromFloor-1];
+		EventBarrier eb = inBarrierList[fromFloor-1];
 		elevator.ReqeuestService(fromFloor, DOWN);
 		eb.arrive();
 		return elevator;

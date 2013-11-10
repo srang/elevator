@@ -5,21 +5,22 @@ public class SingleElevatorVersion2 extends AbstractElevator {
 	static final int UP=0;
 	static final int DOWN = 1;
 	static int NOT_MOVING = 2;
-	EventBarrier[] barrierList;
+	EventBarrier[] inBarrierList;
 	int currentFloor = 1;
 	boolean[][] Outside_RequestList;
 	boolean[] Inside_RequestList;
 	int currentDirection = UP;
 	ArrayList<Rider> riderList;
 	
-	EventBarrier eb;
+	//EventBarrier eb;
 	
 	public SingleElevatorVersion2(int numFloors, int elevatorId,
-			int maxOccupancyThreshold, EventBarrier[] barrierList) {
+			int maxOccupancyThreshold, EventBarrier[] inBarrierList, EventBarrier outBarrier) {
 		super(numFloors, elevatorId, maxOccupancyThreshold);
 		this.Outside_RequestList = new boolean[numFloors][2];
 		this.Inside_RequestList = new boolean[numFloors];
-		this.barrierList = barrierList;
+		this.inBarrierList = inBarrierList;
+		this.outBarrier = outBarrier;
 		riderList = new ArrayList<Rider>();
 	}
 
@@ -27,10 +28,10 @@ public class SingleElevatorVersion2 extends AbstractElevator {
 	/*Called by Elevator and opens the door. Waits for 
 	all rider threads to come in by calling raise from EventBarrier*/
 	public void OpenDoors() {
-		eb = barrierList[currentFloor];
 		Inside_RequestList[currentFloor] = false;
 		System.out.println("Doors will now open");
-		eb.raise();
+		outBarrier.raise();
+		inBarrierList[currentFloor].raise();
 		ClosedDoors();
 	}
 
@@ -46,7 +47,6 @@ public class SingleElevatorVersion2 extends AbstractElevator {
 	/*Visits indicated floor in parameter, and after visiting, door should open 
 	(assuming VisitFloor is called only on floors that have actually been requested)*/
 	public void VisitFloor(int floor) {
-		//eb = barrierList[floor];
 		currentFloor = floor;
 		OpenDoors();
 	}
@@ -55,13 +55,13 @@ public class SingleElevatorVersion2 extends AbstractElevator {
 	/*Called by rider threads, and makes them enter the elevator. Since the rider has already arrived at 
 	 * the event barrier, it completes in event barrier when the rider enters the elevator*/
 	public boolean Enter() {
-		eb = barrierList[currentFloor];
+		EventBarrier inBarrier = inBarrierList[currentFloor];
 		System.out.println("Rider is now entering");
 		Thread riderThread = Thread.currentThread();
 		Rider rider = (Rider) riderThread;
 		if(currentDirection == rider.getRequestedDirection()){
 			riderList.add(rider);
-			eb.complete();
+			inBarrier.complete();
 			System.out.println("Thread has entered");
 			Outside_RequestList[currentFloor][currentDirection] = false;
 			return true;
@@ -73,8 +73,11 @@ public class SingleElevatorVersion2 extends AbstractElevator {
 	public void Exit() {
 		Thread riderThread = Thread.currentThread();
 		Rider rider = (Rider) riderThread;
-		riderList.remove(rider);
-		System.out.println("Thread got off");
+		if(currentFloor == rider.getRequestedFloor()-1){
+			outBarrier.complete();
+			riderList.remove(rider);
+			System.out.println("Thread got off");
+		}
 	}
 
 	@Override
