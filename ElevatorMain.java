@@ -26,5 +26,8 @@ public class ElevatorMain {
 			System.out.println("Multiple Bounded Elevators:");
 			// call the elevator part3
 		}
+		else if(args[0].equals("Inputfile")){
+			ElevatorFactory.open();
+		}
 	}
 }
