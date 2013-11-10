@@ -10,7 +10,7 @@ public class ElevatorMain {
 	public static void main(String[] args) {
 		
 		try {
-			writer = new PrintWriter("Project.log", "UTF-8");
+			writer = new PrintWriter("Elevator.log", "UTF-8");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
