@@ -8,15 +8,15 @@
 
 	Name1: Sam Rang
 	NetId1: spr20
-	Time spent: 10 hours //edit
+	Time spent: 25 hours
 
 	Name2: Shariq Iqbal
 	NetId2: sni
-	Time spent: 10 hours //edit
+	Time spent: 25 hours
 
 	Name3: Duke Kim
 	NetId3: dk116
-	Time spent: 10 hours //edit
+	Time spent: 25 hours
 
 /******************
  * Files to submit
@@ -31,10 +31,27 @@
 /************************
  * Implementation details
  *************************/
-
-/* 
- * This section should contain the implementation details and a overview of the
- * results. 
+ 
+ **General Implementation:
+ * We wrote our main class so that you either enter in p1 and it runs a baked
+ * in case for event barrier with no logging, or your enter p2 and it runs 
+ * Elevator from an input file that you select in a pop-up menu (which type of
+ * Elevator is decided by the setup of the input file.  i is used as the
+ * elevator capacity for unbounded elevators) with logging to Elevator.log.
+ * Our logging function stopped working with less than an hour to submit, so
+ * we switched everything to System.out print statements.
+  
+ * EventBarrier:
+ * Our event barrier was implemented with a counter that counts how many
+ * people are waiting at the gate and bases all of the actions on that number.
+ * Our arrive() method increments the counter and waits on the EventBarrier
+ * object if it is not open.
+ * Our raise() method opens the gate, and notifies all of the people waiting to
+ * go through, and then waits for the line of people to empty (i.e. counter
+ * to go to zero.)
+ * Our complete() method decrements the counter and notifies raise() to wake up.
+ * If the counter is zero then raise() breaks out of its loop, and the gate
+ * closes.
  
  **ElevatorFactory:
  * The ElevatorFactory prompts the user for a file (using a JFileChooser) and 
@@ -54,11 +71,16 @@
  * occurrences of R7 as the same rider, we would need to make sure that R7 had
  * reached floor 3 before requesting service from 3 to 1. This would be an 
  * interesting addition to the problem but a pain. 
-   
+ 
+
+ 
+ 
  * ASSUMPTION: If elevator is full and door opens, the thread will not get in,
  * and he will have to re-enter the queue of requests. (i.e. he must re-press
  * the button).
-
+ 
+ 
+ 
  * You are required to provide a good README document including the
  * implementation details. In particular, you can use pseudocode to describe
  * your implementation details where necessary. However that does not mean to
